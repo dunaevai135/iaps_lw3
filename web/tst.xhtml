@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+
+    <p:spinner />
+    <p:inputText id="decimal" value="#{point.x}" />
+    <p:commandButton value="Ajax Submit" process="decimal" id="ajax" action="#{point.onSlideEnd()}" style="margin-right:20px;" styleClass="ui-priority-primary" />
+    <p:inputText id="txt5" value="#{point.x}" />
+    <p:slider for="txt5">
+        <p:ajax event="slideEnd" listener="#{point.onSlideEnd()}" />
+    </p:slider>
+</h:body>
+</html>
