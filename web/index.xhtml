@@ -8,18 +8,21 @@
         <title>Lab 3</title>
         <link rel="shortcut icon" href="resources/img/duck_mini.png"/>
         <h:outputStylesheet library="css" name="main.css"/>
+        <h:outputScript>var areasImageLink = "${resource['img/areas.png']}";</h:outputScript>
+        <h:outputScript library="js" name="main.js"/>
     </h:head>
     <h:body>
         <div id="header">
             <p>Выполнил: Дунаев Алексей</p>
             <p>P3217 Вариант: 14135484</p>
         </div>
-        <div>
-            <!--<canvas id="canvas" onclick="clickCanvas()" style="background-color:#ffffff; border-radius: 20px;" width="300" height="300"/>-->
+        <div class="section">
+            <canvas id="areas" width="400" height="320" />
+            <div id="areas-msg" style="display: none;"> </div>
+            <div class="point" style="display: none"> </div>
         </div>
         <div id="content">
             <h:form class="form" id="form" method="post">
-                <!--<p:messages id="msgs" />-->
                 <div id="rowX">
                     <p:outputLabel for="x_text" value="X:" />
                     <p:inputText id="x_text" value="#{point.x}" required="true"/>
@@ -44,13 +47,15 @@
                         <p:ajax event="slideEnd" listener="#{point.onSlideSetR}" />
                     </p:slider>
                 </div>
-                <p:commandButton value="Save" update="form" action="#{point.addPoint}" icon="pi pi-check" />
+                <p:commandButton id="save_button" value="Save" update="form" action="#{point.addPoint}" icon="pi pi-check" />
             </h:form>
-            <!--<h:outputScript library="js" name="validate.js"/>-->
         </div>
+        <script>
+            var dots = [];
+        </script>
         <h:panelGroup rendered="#{not empty point.points}" id="table">
             <div class="newWindow">
-                <!--<h:outputScript name="scripts/validate.js">-->
+                <!--<h:outputScript name="scripts/main.js">-->
                     <!--drawCanvas('canvas','#{point.r}');-->
                 <!--</h:outputScript>-->
                 <label id="res"> Результаты:</label>
@@ -71,9 +76,21 @@
                                 <h:outputLabel value="&#10060;" rendered="#{item.inArea == false}" />
                             </td>
                         </tr>
+                        <script>
+                            dots.push({
+                                x: #{item.x},
+                                y: #{item.y},
+                                r: #{item.r},
+                                result: #{item.inArea}
+                            })
+                        </script>
                     </ui:repeat>
                 </table>
             </div>
         </h:panelGroup>
+        <h:outputScript>
+            var CURRENT_R = #{point.r};
+            populateAreaCanvas(dots);
+        </h:outputScript>
     </h:body>
 </html>
