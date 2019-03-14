@@ -18,30 +18,37 @@ function getMouseAbsolutePosition(e) {
     return {x, y};
 }
 
-function processAreasMouseClick(mouse_abs_pos, img_document_pos) {
+function processClick(mouse_abs_pos, img_document_pos) {
     let realpos = {
         x: (mouse_abs_pos.x - img_document_pos.left - POINT_AREA_SIZE.x / 2) / R_TO_PX * CURRENT_R,
         y: -(mouse_abs_pos.y - img_document_pos.top - POINT_AREA_SIZE.y / 2) / R_TO_PX * CURRENT_R,
     };
 
-    $("#x_text").val(realpos.x);
-    $("#y_text").val(realpos.y);
+    $("#form\\:x_text").val(realpos.x);
+    $("#form\\:y_text").val(realpos.y);
 
-    $("#save_button").click();
+    $("#form\\:save_button").click();
 }
 
 $(document).ready(function () {
     $("#areas").click(function (e) {
         let mouse_abs_pos = getMouseAbsolutePosition(e);
         let img_document_pos = $('#areas').offset();
+
         if (mouse_abs_pos.x < img_document_pos.left + POINT_AREA_SIZE.x
             && mouse_abs_pos.y < img_document_pos.top + POINT_AREA_SIZE.y) {
-            processAreasMouseClick(mouse_abs_pos, img_document_pos);
+            processClick(mouse_abs_pos, img_document_pos);
         }
+    });
+
+    let slider = $("#form\\:r_slider");
+    slider.bind("slide", function (e, ui) {
+        CURRENT_R = ui.value;
+        updateAreaCanvas(dots);
     });
 });
 
-function populateAreaCanvas(dots) {
+function updateAreaCanvas(dots) {
     let canvas = document.getElementById("areas");
     let ctx = canvas.getContext("2d");
 

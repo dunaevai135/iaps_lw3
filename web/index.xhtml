@@ -43,7 +43,7 @@
                     <!--<p:inputText id="tmp" value="#{point.y}" /> update="tmp"  -->
                     <p:outputLabel for="r_text" value="R:" />
                     <p:inputText id="r_text" value="#{point.r}" required="true"/>
-                    <p:slider for="r_text" minValue="2" maxValue="5" step="0.1" styleClass="slider">
+                    <p:slider for="r_text" id="r_slider" minValue="2" maxValue="5" step="0.1" styleClass="slider">
                         <p:ajax event="slideEnd" listener="#{point.onSlideSetR}" />
                     </p:slider>
                 </div>
@@ -55,9 +55,6 @@
         </script>
         <h:panelGroup rendered="#{not empty point.points}" id="table">
             <div class="newWindow">
-                <!--<h:outputScript name="scripts/main.js">-->
-                    <!--drawCanvas('canvas','#{point.r}');-->
-                <!--</h:outputScript>-->
                 <label id="res"> Результаты:</label>
                 <table id="beanTable">
                     <tr>
@@ -90,7 +87,7 @@
         </h:panelGroup>
         <h:outputScript>
             var CURRENT_R = #{point.r};
-            populateAreaCanvas(dots);
+            updateAreaCanvas(dots);
         </h:outputScript>
     </h:body>
 </html>
