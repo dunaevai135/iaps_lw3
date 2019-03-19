@@ -1,4 +1,5 @@
 
+import org.hibernate.Session;
 import org.primefaces.event.SlideEndEvent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -29,16 +30,6 @@ public class PointService implements Serializable {
     double y = 0;
     @Min(2) @Max(5)
     double r = 4;
-
-    public String getErr() {
-        return err;
-    }
-
-    public void setErr(String err) {
-        this.err = err;
-    }
-
-    String err; //TODO dell
 
     public LinkedList<Point> getPoints() {
         return points;
@@ -88,12 +79,12 @@ public class PointService implements Serializable {
     }
 
     public void addPoint() {
-//        Session session = HibernateUtil.getSessionFactory().openSession();
-//        session.beginTransaction();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
         Point point = new Point(getX(),getY(),getR(), inArea());
         points.add(point);
-//        session.save(point);
-//        session.getTransaction().commit();
+        session.save(point);
+        session.getTransaction().commit();
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         try {
             ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
@@ -103,17 +94,13 @@ public class PointService implements Serializable {
     }
 
     public void onSlideSetX(SlideEndEvent event) {
-        //TODO check limits
         setX(event.getValue());
     }
 
     public void onInputSetY(AjaxBehaviorEvent event) {
-        //TODO check limits
-//        setY((Double) event.getNewValue());
     }
 
     public void onSlideSetR(SlideEndEvent event) {
-        //TODO check limits
         setR(event.getValue());
     }
 
